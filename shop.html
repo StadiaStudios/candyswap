@@ -7,23 +7,51 @@
 <link rel="manifest" href="manifest.json">
 <link rel="icon" type="image/x-icon" href="assets/favicon.jpeg">
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Nunito:wght@400;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+    :root {
+        --neon-pink: #ff00ff;
+        --neon-cyan: #00ffff;
+        --neon-yellow: #ffff00;
+        --neon-green: #39ff14;
+        --bg-color: #0a0a0a;
+    }
+
+    ::-webkit-scrollbar { width: 12px; }
+    ::-webkit-scrollbar-track { background: var(--bg-color); border-left: 2px solid #333; }
+    ::-webkit-scrollbar-thumb { background: var(--neon-pink); border: 2px solid var(--bg-color); }
+    ::-webkit-scrollbar-thumb:hover { background: var(--neon-cyan); }
+    * { scrollbar-width: thin; scrollbar-color: var(--neon-pink) var(--bg-color); }
 
     body {
         margin: 0;
         padding: 20px;
-        background: #1a0a2e;
+        background: var(--bg-color);
         color: white;
-        font-family: 'Nunito', sans-serif;
+        font-family: 'Press Start 2P', monospace;
         display: flex;
         flex-direction: column;
         align-items: center;
-        padding-bottom: 50px;
+        padding-bottom: 80px;
+        min-height: 100vh;
+        position: relative;
+    }
+
+    body::before {
+        content: " ";
+        display: block;
+        position: fixed;
+        top: 0; left: 0; bottom: 0; right: 0;
+        background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
+                    linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+        z-index: 999;
+        background-size: 100% 3px, 3px 100%;
+        pointer-events: none;
     }
 
     .header {
         width: 100%;
-        max-width: 600px;
+        max-width: 800px;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -31,79 +59,75 @@
     }
 
     .back-btn {
-        background: rgba(255,255,255,0.1);
-        border: 1px solid white;
-        color: white;
-        padding: 8px 15px;
-        border-radius: 20px;
+        background: transparent;
+        border: 3px solid var(--neon-cyan);
+        color: var(--neon-cyan);
+        padding: 10px 12px;
         text-decoration: none;
-        font-family: 'Cinzel', serif;
-        transition: background 0.2s;
+        font-size: 10px;
+        box-shadow: 4px 4px 0 var(--neon-cyan);
+        transition: all 0.1s;
+        text-transform: uppercase;
     }
 
-    .back-btn:hover {
-        background: rgba(255,255,255,0.2);
+    .back-btn:active {
+        box-shadow: 0px 0px 0 var(--neon-cyan);
+        transform: translate(4px, 4px);
     }
 
     .gold-display {
-        font-size: 1.5rem;
-        color: gold;
-        font-weight: bold;
+        font-size: 12px;
+        color: var(--neon-yellow);
         display: flex;
         align-items: center;
-        gap: 8px;
-        background: rgba(0,0,0,0.4);
-        padding: 5px 15px;
-        border-radius: 20px;
-        border: 1px solid #ffd700;
+        gap: 10px;
+        background: #000;
+        padding: 10px 15px;
+        border: 3px solid var(--neon-yellow);
+        box-shadow: 4px 4px 0 var(--neon-yellow);
     }
 
     .page-title {
-        font-family: 'Cinzel', serif;
-        font-size: 2.5rem;
-        margin-top: 0;
-        text-shadow: 0 0 10px rgba(255, 0, 255, 0.5);
+        font-size: 24px;
+        margin: 20px 0 40px 0;
+        color: var(--neon-pink);
+        text-shadow: 4px 4px 0 #000, 6px 6px 0 var(--neon-cyan);
         text-align: center;
     }
 
     .shop-grid {
         display: grid;
         grid-template-columns: 1fr;
-        gap: 25px;
+        gap: 30px;
         width: 100%;
-        max-width: 600px;
+        max-width: 800px;
     }
 
-    @media (min-width: 650px) {
+    @media (min-width: 768px) {
         .shop-grid {
             grid-template-columns: 1fr 1fr;
-            max-width: 800px;
         }
     }
 
     .island-card {
-        background: rgba(255,255,255,0.05);
-        border: 2px solid rgba(255,255,255,0.1);
-        border-radius: 20px;
+        background: #000;
+        border: 4px solid var(--neon-pink);
         padding: 15px;
         display: flex;
         flex-direction: column;
         gap: 15px;
-        transition: 0.3s;
+        transition: 0.1s;
         position: relative;
-        overflow: hidden;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        box-shadow: 6px 6px 0 var(--neon-cyan);
     }
 
     .island-card.active {
-        border-color: #ff00ff;
-        background: rgba(255, 0, 255, 0.08);
-        box-shadow: 0 0 20px rgba(255, 0, 255, 0.3);
+        border-color: var(--neon-green);
+        box-shadow: 6px 6px 0 var(--neon-yellow);
     }
 
     .island-card.locked {
-        filter: grayscale(1) brightness(0.5);
-        cursor: not-allowed;
+        opacity: 0.6;
     }
 
     .lock-overlay {
@@ -113,139 +137,143 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        background: rgba(0,0,0,0.4);
+        background: rgba(0,0,0,0.8);
         z-index: 10;
-        font-family: 'Cinzel', serif;
+        text-align: center;
+        padding: 10px;
+    }
+
+    .lock-text {
+        font-size: 10px;
+        color: var(--neon-pink);
+        line-height: 1.6;
     }
 
     .island-preview {
         width: 100%;
-        height: 160px;
-        border-radius: 12px;
+        height: 150px;
         object-fit: cover;
-        background: #2a104a;
-        border: 2px solid rgba(255,255,255,0.1);
-    }
-
-    .island-info {
-        flex-grow: 1;
-        text-align: center;
+        border: 3px solid #333;
+        image-rendering: pixelated;
     }
 
     .island-info h2 {
-        margin: 0 0 5px 0;
-        font-family: 'Cinzel', serif;
-        color: #7afcff;
-        font-size: 1.4rem;
+        margin: 0 0 10px 0;
+        color: var(--neon-cyan);
+        font-size: 14px;
+        text-transform: uppercase;
     }
 
     .island-info p {
         margin: 0;
-        font-size: 0.95rem;
-        opacity: 0.8;
-        line-height: 1.4;
+        font-size: 9px;
+        color: #aaa;
+        line-height: 1.5;
     }
 
     .buy-btn {
-        background: linear-gradient(135deg, #ff61f2, #460491);
-        border: 2px solid #ff00ff;
-        color: white;
-        padding: 12px;
-        border-radius: 10px;
-        font-family: 'Cinzel', serif;
-        font-weight: bold;
-        font-size: 1rem;
+        background: #000;
+        border: 3px solid var(--neon-yellow);
+        color: var(--neon-yellow);
+        padding: 15px;
+        font-family: 'Press Start 2P', monospace;
+        font-size: 10px;
         cursor: pointer;
         width: 100%;
-        transition: transform 0.1s, filter 0.2s;
-        text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+        box-shadow: 4px 4px 0 var(--neon-yellow);
+        transition: all 0.1s;
+        text-transform: uppercase;
     }
 
-    .buy-btn:hover {
-        filter: brightness(1.2);
+    .buy-btn:hover:not(:disabled) {
+        background: var(--neon-yellow);
+        color: #000;
     }
 
-    .buy-btn:active {
-        transform: scale(0.96);
+    .buy-btn:active:not(:disabled) {
+        box-shadow: 0px 0px 0 var(--neon-yellow);
+        transform: translate(4px, 4px);
     }
 
     .buy-btn:disabled {
-        background: #333;
-        border-color: #555;
+        border-color: #444;
+        color: #444;
+        box-shadow: 4px 4px 0 #222;
         cursor: not-allowed;
-        filter: none;
     }
 
     .equip-btn {
-        background: linear-gradient(135deg, #00d2ff, #3a7bd5);
-        border: 2px solid #00d2ff;
+        border-color: var(--neon-cyan);
+        color: var(--neon-cyan);
+        box-shadow: 4px 4px 0 var(--neon-cyan);
+    }
+
+    .equip-btn:hover {
+        background: var(--neon-cyan) !important;
+        color: #000 !important;
     }
 
     .owned-badge {
-        color: #00ff88;
-        font-weight: bold;
+        color: var(--neon-green);
+        font-size: 10px;
         text-align: center;
-        background: rgba(0, 255, 136, 0.1);
-        border: 1px solid #00ff88;
-        padding: 11px;
-        border-radius: 10px;
-        font-family: 'Cinzel', serif;
-        letter-spacing: 2px;
+        border: 3px solid var(--neon-green);
+        padding: 12px;
+        box-shadow: 4px 4px 0 var(--neon-green);
     }
 
     .modal-overlay {
         position: fixed;
         top: 0; left: 0; right: 0; bottom: 0;
-        background: rgba(0,0,0,0.8);
+        background: rgba(0,0,0,0.9);
         display: none;
         align-items: center;
         justify-content: center;
-        z-index: 1000;
-        backdrop-filter: blur(3px);
+        z-index: 2000;
     }
 
     .modal-box {
-        background: #1a0a2e;
-        border: 2px solid #ff00ff;
-        border-radius: 15px;
+        background: #000;
+        border: 4px solid var(--neon-pink);
         padding: 30px;
         text-align: center;
-        max-width: 300px;
-        width: 80%;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        max-width: 400px;
+        width: 90%;
+        box-shadow: 8px 8px 0 var(--neon-cyan);
     }
 
     .modal-box p {
-        font-size: 1.2rem;
+        font-size: 12px;
         margin-bottom: 25px;
-        font-weight: bold;
+        line-height: 1.6;
+        color: #fff;
     }
 
-    ::-webkit-scrollbar { width: 10px; }
-    ::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.05); border-radius: 10px; }
-    ::-webkit-scrollbar-thumb { background: linear-gradient(135deg, #ff61f2, #460491); border-radius: 10px; }
-    ::-webkit-scrollbar-thumb:hover { background: #ff00ff; }
-    * { scrollbar-width: thin; scrollbar-color: #ff61f2 rgba(255, 255, 255, 0.05); }
+    .blink {
+        animation: blinker 1s step-end infinite;
+    }
+    @keyframes blinker {
+        50% { opacity: 0; }
+    }
 </style>
 </head>
 <body>
 
 <div class="header">
-    <a href="index.html" class="back-btn">← BACK</a>
+    <a href="index.html" class="back-btn">&lt; BACK</a>
     <div class="gold-display">
-        <img style="width:24px; height:24px;" src="assets/coin.png" alt="💰" onerror="this.style.display='none'; this.nextSibling.textContent='💰 '"> 
-        <span id="gold-val">0</span>
+        <span id="gold-val">0</span> GP
     </div>
 </div>
 
-<h1 class="page-title">ISLANDS</h1>
+<h1 class="page-title">WORLD SELECT</h1>
 
 <div class="shop-grid" id="shop-grid"></div>
 
 <div id="msg-modal" class="modal-overlay">
     <div class="modal-box">
         <p id="msg-text"></p>
-        <button class="buy-btn" onclick="closeModal()" style="width: 150px;">OK</button>
+        <button class="buy-btn" onclick="closeModal()">CLOSE</button>
     </div>
 </div>
 
@@ -258,29 +286,43 @@
             id: 'default', 
             name: 'Classic Valley', 
             price: 0, 
-            desc: 'The original sweet experience.', 
+            desc: 'The original 8-bit experience.', 
             image: 'assets/bg/1.png'
         },
         { 
             id: 'xmas_2025', 
             name: 'Xmas 2025', 
             price: 3500, 
-            desc: 'A festive winter wonderland.', 
+            desc: 'Festive winter mission.', 
             image: 'assets/bg/xmas_2025.png'
         },
         { 
             id: 'chocolate-meteor', 
-            name: 'Chocolate Meteor', 
+            name: 'Choco Meteor', 
             price: 5000, 
-            desc: 'Floating Chocolate waterfall islands.', 
+            desc: 'Floating cocoa anomalies.', 
             image: 'assets/bg/2.png'
         },
         { 
             id: 'frozen-valley', 
             name: 'Frozen Valley', 
             price: 8000, 
-            desc: 'Frozen Over Treats!', 
+            desc: 'Sub-zero sugar terrain.', 
             image: 'assets/bg/frozen-valley.png'
+        },
+        { 
+            id: 'fire-dungeon', 
+            name: 'Fire Dungeon', 
+            price: 16000, 
+            desc: 'Maximum heat challenge.', 
+            image: 'assets/bg/fire-dungeon.png'
+        },
+        { 
+            id: 'bikini-bottom', 
+            name: 'Bikini Bottom', 
+            price: 19000, 
+            desc: 'Deep sea candy hunt.', 
+            image: 'assets/bg/bikini-bottom.jpg'
         }
     ];
 
@@ -288,7 +330,7 @@
     let owned = JSON.parse(localStorage.getItem('candySwap_owned')) || ['default'];
     let active = localStorage.getItem('candySwap_activeIsland') || 'default';
 
-    document.getElementById('gold-val').innerText = gold;
+    document.getElementById('gold-val').innerText = gold.toLocaleString();
 
     function showMessage(msg) {
         document.getElementById('msg-text').innerText = msg;
@@ -315,25 +357,25 @@
             if (isLocked) {
                 card.innerHTML = `
                     <div class="lock-overlay">
-                        <img style="width:170px;" src="assets/titleimg.png" alt="Locked">
+                        <div class="lock-text">LOCKED<br><br>UNLOCk PREVIOUS<br>STAGE FIRST</div>
                     </div>
-                    <img src="${island.image}" class="island-preview" style="visibility: hidden;">
-                    <div class="island-info" style="visibility: hidden;">
+                    <img src="${island.image}" class="island-preview" style="filter: blur(5px) grayscale(1);">
+                    <div class="island-info">
                         <h2>??????</h2>
-                        <p>Purchase previous map to unlock</p>
+                        <p>Stage Encrypted</p>
                     </div>
                     <button class="buy-btn" disabled>LOCKED</button>
                 `;
             } else {
                 card.innerHTML = `
-                    <img src="${island.image}" class="island-preview" alt="${island.name}" onerror="this.style.background='#333'">
+                    <img src="${island.image}" class="island-preview" alt="${island.name}" onerror="this.style.background='#222'">
                     <div class="island-info">
                         <h2>${island.name}</h2>
                         <p>${island.desc}</p>
                     </div>
                     ${isOwned 
-                        ? (isActive ? '<div class="owned-badge">EQUIPPED</div>' : `<button class="buy-btn equip-btn" onclick="selectIsland('${island.id}')">EQUIP</button>`)
-                        : `<button class="buy-btn" onclick="buy('${island.id}', ${island.price})">BUY — ${island.price} GOLD</button>`
+                        ? (isActive ? '<div class="owned-badge blink">EQUIPPED</div>' : `<button class="buy-btn equip-btn" onclick="selectIsland('${island.id}')">USE STAGE</button>`)
+                        : `<button class="buy-btn" onclick="buy('${island.id}', ${island.price})">BUY [${island.price} GP]</button>`
                     }
                 `;
             }
@@ -347,12 +389,12 @@
             owned.push(id);
             localStorage.setItem('candySwap_gold', gold);
             localStorage.setItem('candySwap_owned', JSON.stringify(owned));
-            document.getElementById('gold-val').innerText = gold;
+            document.getElementById('gold-val').innerText = gold.toLocaleString();
             buySfx.currentTime = 0;
             buySfx.play().catch(() => {});
             selectIsland(id, false); 
         } else {
-            showMessage("Not enough gold!");
+            showMessage("INSUFFICIENT GOLD PIECES!");
         }
     };
 

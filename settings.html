@@ -7,25 +7,46 @@
     <link rel="manifest" href="manifest.json">
     <link rel="icon" type="image/x-icon" href="assets/favicon.jpeg">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Nunito:wght@400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
-        ::-webkit-scrollbar { width: 10px; }
-        ::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.05); border-radius: 10px; }
-        ::-webkit-scrollbar-thumb { background: linear-gradient(135deg, #ff61f2, #460491); border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: #ff00ff; }
-        * { scrollbar-width: thin; scrollbar-color: #ff61f2 rgba(255, 255, 255, 0.05); }
+        :root {
+            --neon-pink: #ff00ff;
+            --neon-cyan: #00ffff;
+            --neon-yellow: #ffff00;
+            --neon-green: #39ff14;
+            --bg-color: #0a0a0a;
+        }
+
+        ::-webkit-scrollbar { width: 12px; }
+        ::-webkit-scrollbar-track { background: var(--bg-color); border-left: 2px solid #333; }
+        ::-webkit-scrollbar-thumb { background: var(--neon-pink); border: 2px solid var(--bg-color); }
+        ::-webkit-scrollbar-thumb:hover { background: var(--neon-cyan); }
+        * { scrollbar-width: thin; scrollbar-color: var(--neon-pink) var(--bg-color); }
 
         body {
             margin: 0;
             padding: 20px;
-            background: #1a0a2e;
+            background: var(--bg-color);
             color: white;
-            font-family: 'Nunito', sans-serif;
+            font-family: 'Press Start 2P', monospace;
             display: flex;
             flex-direction: column;
             align-items: center;
             height: 100dvh;
             overflow-y: auto;
+            position: relative;
+        }
+
+        body::before {
+            content: " ";
+            display: block;
+            position: fixed;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            z-index: 999;
+            background-size: 100% 3px, 3px 100%;
+            pointer-events: none;
         }
 
         .header {
@@ -36,49 +57,55 @@
             align-items: center;
             margin-bottom: 40px;
             flex-shrink: 0;
+            margin-top: 20px;
         }
 
         .back-btn {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            color: white;
-            padding: 8px 16px;
-            border-radius: 20px;
+            background: transparent;
+            border: 3px solid var(--neon-cyan);
+            color: var(--neon-cyan);
+            padding: 10px 12px;
             text-decoration: none;
-            font-size: 14px;
-            transition: background 0.2s;
+            font-size: 10px;
+            box-shadow: 4px 4px 0 var(--neon-cyan);
+            transition: all 0.1s;
+            text-transform: uppercase;
         }
 
-        .back-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
+        .back-btn:active {
+            box-shadow: 0px 0px 0 var(--neon-cyan);
+            transform: translate(4px, 4px);
         }
 
         h1 {
-            font-family: 'Cinzel', serif;
             margin: 0;
-            font-size: 24px;
-            letter-spacing: 2px;
-            color: #ffd700;
+            font-size: 18px;
+            color: var(--neon-yellow);
+            text-shadow: 3px 3px 0 #ff0055;
+            text-transform: uppercase;
+            text-align: center;
+            line-height: 1.4;
         }
 
         .settings-container {
             width: 100%;
             max-width: 500px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 15px;
+            background: #000;
+            border: 4px solid var(--neon-pink);
             padding: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            margin-bottom: 20px;
+            margin-bottom: 30px;
+            box-shadow: 6px 6px 0px var(--neon-cyan);
+            box-sizing: border-box;
         }
 
         .section-title {
-            font-family: 'Cinzel', serif;
-            font-size: 14px;
-            color: #ff61f2;
-            margin-bottom: 15px;
-            letter-spacing: 1px;
-            border-bottom: 1px solid rgba(255, 97, 242, 0.3);
-            padding-bottom: 5px;
+            font-size: 12px;
+            color: var(--neon-cyan);
+            margin-bottom: 20px;
+            text-align: center;
+            border-bottom: 4px dashed var(--neon-pink);
+            padding-bottom: 10px;
+            text-shadow: 2px 2px 0 #000;
         }
 
         .setting-item {
@@ -86,7 +113,7 @@
             justify-content: space-between;
             align-items: center;
             padding: 15px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 2px solid #333;
         }
 
         .setting-item:last-child {
@@ -94,69 +121,62 @@
         }
 
         .label {
-            font-weight: 700;
-            color: #ccc;
-            text-transform: uppercase;
-            font-size: 13px;
+            color: #aaa;
+            font-size: 10px;
+            line-height: 1.4;
         }
 
         .value {
-            font-family: 'Cinzel', serif;
-            font-size: 18px;
+            font-size: 12px;
             color: #fff;
-        }
-
-        .income-value {
-            color: #ffd700;
-            font-weight: bold;
+            text-align: right;
         }
 
         .link-item {
-            color: #ffd700;
+            color: var(--neon-green);
             text-decoration: none;
-            font-weight: bold;
-            font-size: 14px;
-            transition: color 0.2s;
+            font-size: 10px;
+            border-bottom: 2px solid transparent;
+            transition: border-bottom 0.2s;
         }
 
         .link-item:hover {
-            color: #ff61f2;
-            text-decoration: underline;
+            border-bottom: 2px solid var(--neon-green);
         }
 
         .data-actions {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 10px;
+            gap: 15px;
             padding: 10px 0;
         }
 
         .action-btn {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: white;
-            padding: 12px;
-            border-radius: 10px;
-            font-family: 'Nunito', sans-serif;
-            font-weight: bold;
-            font-size: 12px;
+            background: #000;
+            border: 3px solid var(--neon-yellow);
+            color: var(--neon-yellow);
+            padding: 15px 10px;
+            font-family: 'Press Start 2P', monospace;
+            font-size: 9px;
             cursor: pointer;
-            transition: all 0.2s;
+            box-shadow: 4px 4px 0 var(--neon-yellow);
+            transition: all 0.1s;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 5px;
+            gap: 10px;
+            line-height: 1.4;
         }
 
-        .action-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
-            border-color: #ff61f2;
+        .action-btn:active {
+            box-shadow: 0px 0px 0 var(--neon-yellow);
+            transform: translate(4px, 4px);
+            background: var(--neon-yellow);
+            color: #000;
         }
 
-        .action-btn svg {
-            width: 20px;
-            height: 20px;
-            fill: #ffd700;
+        .btn-icon {
+            font-size: 16px;
         }
 
         #import-input {
@@ -165,103 +185,121 @@
 
         .footer-note {
             margin-top: auto;
-            font-size: 11px;
-            color: rgba(255, 255, 255, 0.4);
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            font-size: 10px;
+            color: var(--neon-pink);
             text-align: center;
             padding-bottom: 20px;
             flex-shrink: 0;
+            line-height: 1.5;
         }
 
-        /* Message Toast */
+        .blink {
+            animation: blinker 1s step-end infinite;
+        }
+        @keyframes blinker {
+            50% { opacity: 0; }
+        }
+
         #toast {
             position: fixed;
             bottom: 30px;
-            background: #460491;
-            color: white;
-            padding: 12px 24px;
-            border-radius: 30px;
-            font-size: 14px;
-            font-weight: bold;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-            border: 1px solid #ff61f2;
-            transform: translateY(100px);
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            background: #000;
+            color: var(--neon-green);
+            padding: 15px 20px;
+            font-size: 10px;
+            border: 4px solid var(--neon-green);
+            box-shadow: 5px 5px 0 var(--neon-green);
+            transform: translateY(150px);
+            transition: transform 0.2s steps(4);
             z-index: 1000;
+            text-align: center;
+            line-height: 1.5;
         }
         #toast.show { transform: translateY(0); }
+
+        @media (max-width: 400px) {
+            .setting-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            .value {
+                text-align: left;
+            }
+            .data-actions {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 <body>
 
     <div class="header">
-        <a href="index.html" class="back-btn">← GAME</a>
+        <a href="index.html" class="back-btn">&lt; BACK</a>
         <h1>SETTINGS</h1>
-        <div style="width: 70px;"></div>
+        <div style="width: 76px;"></div>
     </div>
 
     <div class="settings-container">
-        <div class="section-title">Statistics</div>
+        <div class="section-title">PLAYER STATS</div>
         <div class="setting-item">
-            <span class="label">Game Version</span>
-            <span class="value" id="version-display">v1.0.4</span>
+            <span class="label">LEVEL</span>
+            <span class="value" id="level-display">0</span>
         </div>
         <div class="setting-item">
-            <span class="label">Lifetime Gold</span>
-            <span class="value income-value" id="lifetime-income">0</span>
-        </div>
-    </div>
-
-    <div class="settings-container">
-        <div class="section-title">Resources</div>
-        <div class="setting-item">
-            <span class="label">Official Website</span>
-            <a href="https://stadiastudios.github.io/stadia/" target="_blank" class="link-item">VISIT SITE</a>
-        </div>
-        <div class="setting-item">
-            <span class="label">Update History</span>
-            <a href="changelog.txt" target="_blank" class="link-item">VIEW CHANGELOG</a>
+            <span class="label">VERSION</span>
+            <span class="value" id="version-display">V1.2.4</span>
         </div>
     </div>
 
     <div class="settings-container">
-        <div class="section-title">Data Management</div>
+        <div class="section-title">NETWORK</div>
+        <div class="setting-item">
+            <span class="label">STADIASTUDIOS</span>
+            <a href="https://stadiastudios.github.io/stadia/" target="_blank" class="link-item">OPEN_&gt;</a>
+        </div>
+        <div class="setting-item">
+            <span class="label">CHANGELOG</span>
+            <a href="changelog.txt" target="_blank" class="link-item">READ_&gt;</a>
+        </div>
+    </div>
+
+    <div class="settings-container">
+        <div class="section-title">MEMORY CARD</div>
         <div class="data-actions">
             <button class="action-btn" onclick="exportData()">
-                <svg viewBox="0 0 24 24"><path d="M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z"/></svg>
-                DOWNLOAD DATA
+                <span class="btn-icon">▼</span>
+                SAVE DATA
             </button>
             <button class="action-btn" onclick="triggerImport()">
-                <svg viewBox="0 0 24 24"><path d="M9,16V10H5L12,3L19,10H15V16H9M5,20V18H19V20H5Z"/></svg>
-                IMPORT DATA
+                <span class="btn-icon">▲</span>
+                LOAD DATA
             </button>
         </div>
         <input type="file" id="import-input" accept=".json" onchange="importData(event)">
     </div>
 
-    <div class="footer-note">
-        CandySwap • Progress is saved locally
+    <div class="footer-note blink">
+        INSERT COIN TO CONTINUE<br><br>
+        <span style="color: #666; font-size: 8px;">PROGRESS SAVED LOCALLY</span>
     </div>
 
-    <div id="toast">Progress Saved!</div>
+    <div id="toast">PROGRESS SAVED!</div>
 
     <script>
         const STORAGE_KEYS = {
             gold: 'candySwap_gold',
-            lifetime: 'candySwap_lifetimeGold',
             owned: 'candySwap_owned',
             active: 'candySwap_activeIsland'
         };
 
-        document.addEventListener('DOMContentLoaded', () => {
-            updateStats();
-        });
-
         function updateStats() {
-            const currentGold = parseInt(localStorage.getItem(STORAGE_KEYS.gold)) || 0;
-            const lifetimeGold = parseInt(localStorage.getItem(STORAGE_KEYS.lifetime)) || currentGold;
-            document.getElementById('lifetime-income').innerText = lifetimeGold.toLocaleString();
+            try {
+                const owned = JSON.parse(localStorage.getItem(STORAGE_KEYS.owned)) || ['default'];
+                document.getElementById('level-display').innerText = owned.length;
+            } catch (e) {
+                document.getElementById('level-display').innerText = '1';
+            }
         }
 
         function showToast(msg) {
@@ -274,7 +312,6 @@
         function exportData() {
             const data = {
                 gold: localStorage.getItem(STORAGE_KEYS.gold),
-                lifetime: localStorage.getItem(STORAGE_KEYS.lifetime),
                 owned: localStorage.getItem(STORAGE_KEYS.owned),
                 active: localStorage.getItem(STORAGE_KEYS.active),
                 exportDate: new Date().toISOString()
@@ -289,7 +326,7 @@
             a.click();
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
-            showToast("Backup Downloaded!");
+            showToast("BACKUP SAVED!");
         }
 
         function triggerImport() {
@@ -305,26 +342,25 @@
                 try {
                     const data = JSON.parse(e.target.result);
                     
-                    // Validation: Ensure it looks like our save data
                     if (data.gold !== undefined || data.owned !== undefined) {
                         if (data.gold) localStorage.setItem(STORAGE_KEYS.gold, data.gold);
-                        if (data.lifetime) localStorage.setItem(STORAGE_KEYS.lifetime, data.lifetime);
                         if (data.owned) localStorage.setItem(STORAGE_KEYS.owned, data.owned);
                         if (data.active) localStorage.setItem(STORAGE_KEYS.active, data.active);
                         
                         updateStats();
-                        showToast("Data Imported Successfully!");
+                        showToast("DATA LOADED!");
                     } else {
-                        showToast("Invalid save file!");
+                        showToast("FILE CORRUPT!");
                     }
                 } catch (err) {
-                    showToast("Error reading file!");
+                    showToast("ERROR READING!");
                 }
             };
             reader.readAsText(file);
-            // Reset input so the same file can be uploaded again if needed
             event.target.value = '';
         }
+
+        updateStats();
     </script>
 </body>
 </html>

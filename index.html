@@ -7,13 +7,19 @@
     <link rel="manifest" href="manifest.json">
     <link rel="icon" type="image/x-icon" href="assets/favicon.jpeg">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Nunito:wght@400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Nunito:wght@400;700&family=Press+Start+2P&display=swap');
 
         * {
             box-sizing: border-box;
             user-select: none;
             -webkit-user-select: none;
             touch-action: none;
+        }
+
+        :root {
+            --neon-pink: #ff00ff;
+            --neon-cyan: #00ffff;
+            --neon-yellow: #ffff00;
         }
 
         body {
@@ -52,67 +58,73 @@
             pointer-events: none;
         }
 
-        h1 {
-            font-family: 'Cinzel', serif;
-            font-size: 1.9rem;
-            margin: 0;
-            background: linear-gradient(to right, #7eb2ff, #ff837a);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
+        /* Updated UI Header for Gold */
         .gold-display {
             display: inline-flex;
-            font-size: 1.8rem;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 14px;
             font-weight: bold;
             align-items: center;
-            background: rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(255, 215, 0, 0.3);
-            padding: 5px 15px;
-            color: gold;
-            border-radius: 20px;
-            backdrop-filter: blur(5px);
+            background: #000;
+            border: 3px solid var(--neon-yellow);
+            padding: 8px 15px;
+            color: var(--neon-yellow);
+            border-radius: 0;
+            box-shadow: 4px 4px 0px rgba(255, 255, 0, 0.3);
+            margin-top: 10px;
         }
 
         .gold-display img {
-            margin-right: 5px;
-            filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.5));
-            width: 26px;
+            margin-right: 10px;
+            width: 20px;
+            image-rendering: pixelated;
         }
 
         .score-container {
-            text-align: right;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
             pointer-events: auto;
         }
 
+        /* Arcade Styled Score */
         .score-value {
-            font-size: 1.8rem;
-            font-weight: bold;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 12px;
             display: inline-flex;
             align-items: center;
-            background: rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(255, 215, 0, 0.3);
-            padding: 5px 15px;
-            color: rgb(255, 255, 255);
-            border-radius: 20px;
-            backdrop-filter: blur(5px);
+            background: #000;
+            border: 3px solid var(--neon-cyan);
+            padding: 8px 15px;
+            color: var(--neon-cyan);
+            border-radius: 0;
+            box-shadow: 4px 4px 0px rgba(0, 255, 255, 0.3);
+            margin-bottom: 8px;
         }
 
+        /* Arcade Styled Pause Button */
         #pause-btn {
-            background: rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(255, 215, 0, 0.3);
-            padding: 5px 15px;
-            color: rgb(211, 211, 211);
-            border-radius: 20px;
-            font-family: 'Cinzel', serif;
+            background: #000;
+            border: 3px solid var(--neon-pink);
+            padding: 8px 15px;
+            color: var(--neon-pink);
+            border-radius: 0;
+            font-family: 'Press Start 2P', cursive;
             cursor: pointer;
-            font-size: 1.8rem;
+            font-size: 12px;
             pointer-events: auto;
-            margin-top: 5px;
+            box-shadow: 4px 4px 0px rgba(255, 0, 255, 0.3);
+            transition: all 0.1s;
+        }
+
+        #pause-btn:active {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px rgba(255, 0, 255, 0.3);
         }
 
         #pause-btn:hover {
-            color: gold;
+            background: var(--neon-pink);
+            color: #000;
         }
 
         #game-board {
@@ -172,10 +184,10 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-family: 'Cinzel', serif;
-            font-size: clamp(2rem, 10vw, 4rem);
-            color: #fff;
-            text-shadow: 0 0 20px #ff00ff;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 24px;
+            color: var(--neon-pink);
+            text-shadow: 4px 4px 0px #000;
             pointer-events: none;
             opacity: 0;
             z-index: 100;
@@ -200,16 +212,16 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgb(27, 27, 27);
+             background-image: url('assets/banner/archive/fire-dungeon/fire-dungeon2.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
             display: none;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             z-index: 200;
-            background-image: url('assets/banner/1d.png');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
+            border: 10px double var(--neon-cyan);
         }
 
         #pause-overlay.show {
@@ -217,29 +229,41 @@
         }
 
         .menu-title {
-            font-family: 'Cinzel', serif;
-            font-size: 2.5rem;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 2rem;
             margin-bottom: 30px;
-            color: #7afcff;
+            color: var(--neon-cyan);
+            text-shadow: 4px 4px 0px var(--neon-pink);
         }
 
         .menu-btn {
-            background: linear-gradient(135deg, #ff61f2, #460491);
-            border: none;
-            color: white;
+            background: #000;
+            border: 3px solid var(--neon-pink);
+            color: var(--neon-pink);
             padding: 15px 40px;
-            font-size: 1.2rem;
-            font-family: 'Cinzel', serif;
-            border-radius: 50px;
+            font-size: 14px;
+            font-family: 'Press Start 2P', cursive;
+            border-radius: 0;
             cursor: pointer;
             margin: 10px;
-            width: 200px;
-            box-shadow: 0 4px 15px rgba(255, 58, 91, 0.4);
+            width: 280px;
+            box-shadow: 4px 4px 0px rgba(255, 0, 255, 0.3);
+        }
+
+        .menu-btn:hover {
+            background: var(--neon-pink);
+            color: #000;
         }
 
         .menu-btn.secondary {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-color: var(--neon-cyan);
+            color: var(--neon-cyan);
+            box-shadow: 4px 4px 0px rgba(0, 255, 255, 0.3);
+        }
+        
+        .menu-btn.secondary:hover {
+            background: var(--neon-cyan);
+            color: #000;
         }
     </style>
 </head>
@@ -248,14 +272,15 @@
     <div id="ui-layer">
         <div class="stats-group">
             <img style="width:120px;" src="assets/titleimg.png" alt="CandySwap"><br>
+            <div class="gold-display">
+                <img src="assets/coin.png" alt="" onerror="this.src='https://img.icons8.com/color/48/coin.png'">
+                <span id="gold">0</span>
+            </div>
         </div>
         <div class="score-container">
             <button id="pause-btn">PAUSE</button>
+            <div style="height:10px"></div>
             <div class="score-value" id="score">0</div>
-            <div class="gold-display">
-                <img src="assets/coin.png" alt="" onerror="this.src='https://img.icons8.com/color/48/coin.png'">
-                <span style="font-size:26px;" id="gold">0</span>
-            </div>
         </div>
     </div>
 
@@ -267,9 +292,10 @@
         <button class="menu-btn" id="resume-btn">RESUME</button>
         <a href="shop.html"><button class="menu-btn">SHOP</button></a>
         <button class="menu-btn secondary" id="restart-btn">CLAIM</button>
-        <a href="settings.html"><button class="menu-btn">SETTINGS</button></a>
+        <a href="settings.html"><button class="menu-btn secondary">SETTINGS</button></a>
     </div>
 
+    <script src="vfx.js"></script>
     <script src="sound.js"></script>
     <script src="mainmenu.js"></script>
 
@@ -363,25 +389,17 @@
         }
 
         function initGame(isRestart = false) {
-            // --- NEW: Multiplier logic added here ---
             if (isRestart) { 
-                // Default multiplier is 1.0 (no change)
                 let multiplier = 1.0; 
-                
-                // If a theme is loaded and has a multiplier, use it
                 if (window.IslandTheme && window.IslandTheme.scoreMultiplier) {
                     multiplier = window.IslandTheme.scoreMultiplier;
                 }
-                
-                // Calculate earned gold with the multiplier
                 let earnedGold = Math.floor(score * multiplier);
                 gold += earnedGold; 
-                
                 saveGold(); 
             }
-            // --- End of multiplier logic ---
 
-            goldEl.innerText = gold;
+            goldEl.innerText = gold.toLocaleString();
             boardEl.innerHTML = '';
             board = []; score = 0; bombActive = false;
             scoreEl.innerText = score;
@@ -491,6 +509,26 @@
 
         async function handleMatches(matches, combo = 1, triggeredBombs = []) {
             if (window.playSound) window.playSound(triggeredBombs.length > 0 ? 'bomb' : 'combo');
+            
+            if (triggeredBombs.length > 0) {
+                if (window.VFX) window.VFX.shake(boardEl, 15, 600);
+                triggeredBombs.forEach(bomb => {
+                    const bx = bomb.c * cellSize + offsetX + (cellSize/2);
+                    const by = bomb.r * cellSize + offsetY + (cellSize/2);
+                    if (window.VFX) {
+                        window.VFX.createBombLines(boardEl, bx, by, cellSize);
+                        window.VFX.createParticles(boardEl, bx, by, 15);
+                    }
+                });
+            } else if (matches.length > 0) {
+                if (window.VFX) window.VFX.shake(boardEl, 4 * combo, 300);
+                matches.forEach(([r, c]) => {
+                    const px = c * cellSize + offsetX + (cellSize/2);
+                    const py = r * cellSize + offsetY + (cellSize/2);
+                    if (window.VFX) window.VFX.createParticles(boardEl, px, py, 4);
+                });
+            }
+
             if (triggeredBombs.length > 0) {
                 bombActive = false; 
                 triggeredBombs.forEach(bomb => {
