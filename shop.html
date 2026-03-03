@@ -43,7 +43,7 @@
         position: fixed;
         top: 0; left: 0; bottom: 0; right: 0;
         background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
-                    linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+                    linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 255, 0, 0.06));
         z-index: 999;
         background-size: 100% 3px, 3px 100%;
         pointer-events: none;
@@ -56,6 +56,14 @@
         justify-content: space-between;
         align-items: center;
         margin-bottom: 30px;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+
+    .header-right {
+        display: flex;
+        gap: 15px;
+        align-items: center;
     }
 
     .back-btn {
@@ -75,16 +83,32 @@
         transform: translate(4px, 4px);
     }
 
-    .gold-display {
-        font-size: 12px;
-        color: var(--neon-yellow);
+    .stat-display {
+        font-size: 10px;
         display: flex;
         align-items: center;
-        gap: 10px;
+        gap: 8px;
         background: #000;
-        padding: 10px 15px;
-        border: 3px solid var(--neon-yellow);
+        padding: 8px 12px;
+        border: 3px solid white;
+    }
+
+    .gold-display {
+        color: var(--neon-yellow);
+        border-color: var(--neon-yellow);
         box-shadow: 4px 4px 0 var(--neon-yellow);
+    }
+
+    .level-display {
+        color: var(--neon-green);
+        border-color: var(--neon-green);
+        box-shadow: 4px 4px 0 var(--neon-green);
+    }
+
+    .stat-display img {
+        width: 14px;
+        height: 14px;
+        image-rendering: pixelated;
     }
 
     .page-title {
@@ -95,12 +119,39 @@
         text-align: center;
     }
 
+    .chapter-container {
+        width: 100%;
+        max-width: 800px;
+        margin-bottom: 60px;
+    }
+
+    .chapter-header {
+        border-bottom: 4px double var(--neon-cyan);
+        padding-bottom: 10px;
+        margin-bottom: 30px;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .chapter-number {
+        background: var(--neon-pink);
+        color: #000;
+        padding: 5px 10px;
+        font-size: 12px;
+    }
+
+    .chapter-name {
+        font-size: 18px;
+        color: var(--neon-cyan);
+        text-transform: uppercase;
+    }
+
     .shop-grid {
         display: grid;
         grid-template-columns: 1fr;
         gap: 30px;
         width: 100%;
-        max-width: 800px;
     }
 
     @media (min-width: 768px) {
@@ -119,6 +170,7 @@
         transition: 0.1s;
         position: relative;
         box-shadow: 6px 6px 0 var(--neon-cyan);
+        scroll-margin: 120px;
     }
 
     .island-card.active {
@@ -137,7 +189,7 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        background: rgba(0,0,0,0.8);
+        background: rgba(0,0,0,0.85);
         z-index: 10;
         text-align: center;
         padding: 10px;
@@ -261,14 +313,20 @@
 
 <div class="header">
     <a href="index.html" class="back-btn">&lt; BACK</a>
-    <div class="gold-display">
-        <span id="gold-val">0</span> GP
+    <div class="header-right">
+        <div class="stat-display level-display">
+            LVL:<span id="level-val">0</span>
+        </div>
+        <div class="stat-display gold-display">
+            <span id="gold-val">0</span>
+            <img src="assets/coin.png" alt="Coins" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSIjRkZGRjAwIj48Y2lyY2xlIGN4PSIxMiIgY3k9IjEyIiByPSIxMCIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjIiLz48dGV4dCB4PSI5IiB5PSIxNyIgZmlsbD0iIzAwMCIgc3R5bGU9ImZvbnQtc2l6ZTogMTJweDsgZm9udC13ZWlnaHQ6IGJvbGQ7Ij4kPC90ZXh0Pjwvc3ZnPg=='">
+        </div>
     </div>
 </div>
 
-<h1 class="page-title">WORLD SELECT</h1>
+<h1 class="page-title">LEVELS SELECT</h1>
 
-<div class="shop-grid" id="shop-grid"></div>
+<div id="shop-container"></div>
 
 <div id="msg-modal" class="modal-overlay">
     <div class="modal-box">
@@ -281,48 +339,33 @@
     const buySfx = new Audio('assets/sfx/buy.mp3');
     const equipSfx = new Audio('assets/sfx/select.mp3');
 
-    const islands = [
-        { 
-            id: 'default', 
-            name: 'Classic Valley', 
-            price: 0, 
-            desc: 'The original 8-bit experience.', 
-            image: 'assets/bg/1.png'
+    const chapters = [
+        {
+            number: 1,
+            title: "Classic Valley",
+            islands: [
+                { id: 'default', name: 'Classic Valley', price: 0, desc: 'The original 8-bit experience.', image: 'assets/bg/1.png' },
+                { id: 'xmas_2025', name: 'Xmas 2025', price: 3500, desc: 'Festive winter mission.', image: 'assets/bg/xmas_2025.png' },
+                { id: 'chocolate-meteor', name: 'Choco Meteor', price: 5000, desc: 'Floating cocoa anomalies.', image: 'assets/bg/2.png' },
+                { id: 'frozen-valley', name: 'Frozen Valley', price: 8000, desc: 'Sub-zero sugar terrain.', image: 'assets/bg/frozen-valley.png' },
+                { id: 'fire-dungeon', name: 'Fire Dungeon', price: 16000, desc: 'Maximum heat challenge.', image: 'assets/bg/fire-dungeon.png' }
+            ]
         },
-        { 
-            id: 'xmas_2025', 
-            name: 'Xmas 2025', 
-            price: 3500, 
-            desc: 'Festive winter mission.', 
-            image: 'assets/bg/xmas_2025.png'
+        {
+            number: 2,
+            title: "Film City",
+            islands: [
+                { id: 'bikini-bottom', name: 'Bikini Bottom', price: 19000, desc: 'Deep sea candy hunt.', image: 'assets/bg/bikini-bottom.jpg' },
+                { id: 'magic-city-wizard101', name: 'Wizards101: Magic City', price: 25000, desc: 'Wizard101 Arcane Adventure.', image: 'assets/bg/magic-city.jpg' },
+                { id: 'ComingSoon2', name: 'Coming Soon', price: 9999999999999999999999999999999999999999, desc: '????????', image: 'assets/titleimg.png' }
+            ]
         },
-        { 
-            id: 'chocolate-meteor', 
-            name: 'Choco Meteor', 
-            price: 5000, 
-            desc: 'Floating cocoa anomalies.', 
-            image: 'assets/bg/2.png'
-        },
-        { 
-            id: 'frozen-valley', 
-            name: 'Frozen Valley', 
-            price: 8000, 
-            desc: 'Sub-zero sugar terrain.', 
-            image: 'assets/bg/frozen-valley.png'
-        },
-        { 
-            id: 'fire-dungeon', 
-            name: 'Fire Dungeon', 
-            price: 16000, 
-            desc: 'Maximum heat challenge.', 
-            image: 'assets/bg/fire-dungeon.png'
-        },
-        { 
-            id: 'bikini-bottom', 
-            name: 'Bikini Bottom', 
-            price: 19000, 
-            desc: 'Deep sea candy hunt.', 
-            image: 'assets/bg/bikini-bottom.jpg'
+        {
+            number: 3,
+            title: "Coming Soon",
+            islands: [
+                { id: 'ComingSoon', name: 'Coming Soon', price: 99999999999999999999, desc: 'Coming Soon', image: 'assets/titleimg.png' }
+            ]
         }
     ];
 
@@ -330,7 +373,10 @@
     let owned = JSON.parse(localStorage.getItem('candySwap_owned')) || ['default'];
     let active = localStorage.getItem('candySwap_activeIsland') || 'default';
 
-    document.getElementById('gold-val').innerText = gold.toLocaleString();
+    function updateHeaderStats() {
+        document.getElementById('gold-val').innerText = gold.toLocaleString();
+        document.getElementById('level-val').innerText = owned.length;
+    }
 
     function showMessage(msg) {
         document.getElementById('msg-text').innerText = msg;
@@ -341,46 +387,77 @@
         document.getElementById('msg-modal').style.display = 'none';
     }
 
-    function render() {
-        const grid = document.getElementById('shop-grid');
-        grid.innerHTML = '';
+    function render(shouldScroll = false) {
+        const container = document.getElementById('shop-container');
+        container.innerHTML = '';
 
-        islands.forEach((island, index) => {
-            const isOwned = owned.includes(island.id);
-            const isActive = active === island.id;
-            const previousIslandOwned = index === 0 || owned.includes(islands[index - 1].id);
-            const isLocked = !isOwned && !previousIslandOwned;
-
-            const card = document.createElement('div');
-            card.className = `island-card ${isActive ? 'active' : ''} ${isLocked ? 'locked' : ''}`;
-            
-            if (isLocked) {
-                card.innerHTML = `
-                    <div class="lock-overlay">
-                        <div class="lock-text">LOCKED<br><br>UNLOCk PREVIOUS<br>STAGE FIRST</div>
-                    </div>
-                    <img src="${island.image}" class="island-preview" style="filter: blur(5px) grayscale(1);">
-                    <div class="island-info">
-                        <h2>??????</h2>
-                        <p>Stage Encrypted</p>
-                    </div>
-                    <button class="buy-btn" disabled>LOCKED</button>
-                `;
-            } else {
-                card.innerHTML = `
-                    <img src="${island.image}" class="island-preview" alt="${island.name}" onerror="this.style.background='#222'">
-                    <div class="island-info">
-                        <h2>${island.name}</h2>
-                        <p>${island.desc}</p>
-                    </div>
-                    ${isOwned 
-                        ? (isActive ? '<div class="owned-badge blink">EQUIPPED</div>' : `<button class="buy-btn equip-btn" onclick="selectIsland('${island.id}')">USE STAGE</button>`)
-                        : `<button class="buy-btn" onclick="buy('${island.id}', ${island.price})">BUY [${island.price} GP]</button>`
-                    }
-                `;
+        chapters.forEach((chapter, index) => {
+            let isChapterUnlocked = true;
+            if (index > 0) {
+                const prevChapter = chapters[index - 1];
+                isChapterUnlocked = prevChapter.islands.every(isl => owned.includes(isl.id));
             }
-            grid.appendChild(card);
+
+            const chapterDiv = document.createElement('div');
+            chapterDiv.className = 'chapter-container';
+            
+            chapterDiv.innerHTML = `
+                <div class="chapter-header">
+                    <span class="chapter-number">CH ${chapter.number}</span>
+                    <span class="chapter-name">${chapter.title}</span>
+                </div>
+                <div class="shop-grid"></div>
+            `;
+
+            const grid = chapterDiv.querySelector('.shop-grid');
+
+            chapter.islands.forEach((island) => {
+                const isOwned = owned.includes(island.id);
+                const isActive = active === island.id;
+                
+                const card = document.createElement('div');
+                card.id = `island-${island.id}`;
+                card.className = `island-card ${isActive ? 'active' : ''} ${!isChapterUnlocked ? 'locked' : ''}`;
+                
+                if (!isChapterUnlocked) {
+                    card.innerHTML = `
+                        <div class="lock-overlay">
+                            <div class="lock-text">CHAPTER LOCKED<br><br>BUY ALL STAGES IN<br>CH ${chapter.number - 1} TO UNLOCK</div>
+                        </div>
+                        <img src="${island.image}" class="island-preview" style="filter: blur(8px) grayscale(1);">
+                        <div class="island-info">
+                            <h2>??????</h2>
+                            <p>Complete previous chapter</p>
+                        </div>
+                        <button class="buy-btn" disabled>LOCKED</button>
+                    `;
+                } else {
+                    card.innerHTML = `
+                        <img src="${island.image}" class="island-preview" alt="${island.name}" onerror="this.style.background='#222'">
+                        <div class="island-info">
+                            <h2>${island.name}</h2>
+                            <p>${island.desc}</p>
+                        </div>
+                        ${isOwned 
+                            ? (isActive ? '<div class="owned-badge blink">EQUIPPED</div>' : `<button class="buy-btn equip-btn" onclick="selectIsland('${island.id}')">USE STAGE</button>`)
+                            : `<button class="buy-btn" onclick="buy('${island.id}', ${island.price})">BUY [${island.price}]</button>`
+                        }
+                    `;
+                }
+                grid.appendChild(card);
+            });
+
+            container.appendChild(chapterDiv);
         });
+
+        if (shouldScroll) {
+            setTimeout(() => {
+                const activeCard = document.getElementById(`island-${active}`);
+                if (activeCard) {
+                    activeCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }, 100);
+        }
     }
 
     window.buy = (id, price) => {
@@ -389,12 +466,12 @@
             owned.push(id);
             localStorage.setItem('candySwap_gold', gold);
             localStorage.setItem('candySwap_owned', JSON.stringify(owned));
-            document.getElementById('gold-val').innerText = gold.toLocaleString();
+            updateHeaderStats();
             buySfx.currentTime = 0;
             buySfx.play().catch(() => {});
             selectIsland(id, false); 
         } else {
-            showMessage("INSUFFICIENT GOLD PIECES!");
+            showMessage("INSUFFICIENT GOLD!");
         }
     };
 
@@ -405,10 +482,11 @@
             equipSfx.currentTime = 0;
             equipSfx.play().catch(() => {});
         }
-        render();
+        render(false);
     };
 
-    render();
+    updateHeaderStats();
+    render(true);
 </script>
 </body>
 </html>

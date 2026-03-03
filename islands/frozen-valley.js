@@ -6,6 +6,7 @@ window.IslandTheme = {
     backgroundGradient: 'linear-gradient(rgb(93 120 204) 0%, rgb(101 76 207) 100%)',
     boardImage: 'assets/bg/frozen-valley.png', 
     bombImage: 'assets/candy/frozen-valley/bomb.png',
+    currencyImage: 'assets/candy/frozen-valley/coin.png',
     music: 'assets/sfx/frozen-valley.mp3',
     blockBorderColor: '#74b0ff',
     blocks: [

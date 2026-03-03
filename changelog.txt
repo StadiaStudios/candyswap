@@ -1,5 +1,14 @@
+V1.3.5- - - 
+Bug Fixes, Maps Are now split into chapters, Maps now Have Custom Coin Images, Shop Price Tweaks And Tweaks to Chapters, Players can now 
+choose any map in the chapter but not any other chapters until all previous ones are unlocked.
+-New Chapters:
+Classic Valley
+Film City.
+-New Maps:
+Wizard101: Magic City Arcane Adventures | 20% Multiplier
+
 V1.2.4- - - 
-New Maps: 
+-New Maps: 
 Fire Dungeon | 10% Multiplier
 Bikini Bottom | 12% Multiplier
 New app icon, New Game banner, Bug Fixes, Backgrounds to the Shop, Settings enhancements, New VFX added to the screen, Level Display to Settings,

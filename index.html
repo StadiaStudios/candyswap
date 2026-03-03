@@ -58,7 +58,6 @@
             pointer-events: none;
         }
 
-        /* Updated UI Header for Gold */
         .gold-display {
             display: inline-flex;
             font-family: 'Press Start 2P', cursive;
@@ -77,6 +76,8 @@
         .gold-display img {
             margin-right: 10px;
             width: 20px;
+            height: 20px;
+            object-fit: contain;
             image-rendering: pixelated;
         }
 
@@ -87,7 +88,6 @@
             pointer-events: auto;
         }
 
-        /* Arcade Styled Score */
         .score-value {
             font-family: 'Press Start 2P', cursive;
             font-size: 12px;
@@ -102,7 +102,6 @@
             margin-bottom: 8px;
         }
 
-        /* Arcade Styled Pause Button */
         #pause-btn {
             background: #000;
             border: 3px solid var(--neon-pink);
@@ -120,11 +119,6 @@
         #pause-btn:active {
             transform: translate(2px, 2px);
             box-shadow: 2px 2px 0px rgba(255, 0, 255, 0.3);
-        }
-
-        #pause-btn:hover {
-            background: var(--neon-pink);
-            color: #000;
         }
 
         #game-board {
@@ -212,7 +206,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-             background-image: url('assets/banner/archive/fire-dungeon/fire-dungeon2.png');
+            background-image: url('assets/banner/1d.png');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -260,11 +254,6 @@
             color: var(--neon-cyan);
             box-shadow: 4px 4px 0px rgba(0, 255, 255, 0.3);
         }
-        
-        .menu-btn.secondary:hover {
-            background: var(--neon-cyan);
-            color: #000;
-        }
     </style>
 </head>
 <body>
@@ -273,7 +262,7 @@
         <div class="stats-group">
             <img style="width:120px;" src="assets/titleimg.png" alt="CandySwap"><br>
             <div class="gold-display">
-                <img src="assets/coin.png" alt="" onerror="this.src='https://img.icons8.com/color/48/coin.png'">
+                <img id="coin-icon" src="assets/coin.png" alt="" onerror="this.src='https://img.icons8.com/color/48/coin.png'">
                 <span id="gold">0</span>
             </div>
         </div>
@@ -330,6 +319,11 @@
                         }
                         if (window.IslandTheme.boardImage) {
                             boardEl.style.backgroundImage = `url(${window.IslandTheme.boardImage})`;
+                        }
+                        // Update Coin Icon if theme provides one
+                        if (window.IslandTheme.currencyImage) {
+                            const coinEl = document.getElementById('coin-icon');
+                            if (coinEl) coinEl.src = window.IslandTheme.currencyImage;
                         }
                         if (window.IslandTheme.music && typeof bgm !== 'undefined') {
                             bgm.src = window.IslandTheme.music;

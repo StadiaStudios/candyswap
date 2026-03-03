@@ -6,6 +6,7 @@ window.IslandTheme = {
     backgroundGradient: 'linear-gradient(#0143a1, #3b307b',
     boardImage: 'assets/bg/bikini-bottom.jpg', 
     bombImage: 'assets/candy/bikini-bottom/bomb.png',
+    currencyImage: 'assets/candy/bikini-bottom/coin.png', 
     music: 'assets/sfx/bikini-bottom.mp3',
     blockBorderColor: '#5490ff',
     blocks: [
