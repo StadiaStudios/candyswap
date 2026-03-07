@@ -8,6 +8,9 @@ window.IslandTheme = {
     bombImage: 'assets/candy/magic-city/book.png',
     currencyImage: 'assets/candy/magic-city/coin.png', 
     music: 'assets/sfx/wizard-city.mp3',
+    sfxMove: 'assets/sfx/magic-city/move.mp3', 
+    sfxCombo: 'assets/sfx/magic-city/combo.mp3', 
+    sfxBomb: 'assets/sfx/magic-city/bomb.mp3', 
     blockBorderColor: '#3a76ba',
     blocks: [
         { id: 'FireSpell', img: 'assets/candy/magic-city/fire-spells.png' },

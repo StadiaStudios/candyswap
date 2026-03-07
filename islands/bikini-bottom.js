@@ -8,6 +8,9 @@ window.IslandTheme = {
     bombImage: 'assets/candy/bikini-bottom/bomb.png',
     currencyImage: 'assets/candy/bikini-bottom/coin.png', 
     music: 'assets/sfx/bikini-bottom.mp3',
+    sfxMove: 'assets/sfx/bikini-bottom/move.mp3', 
+    sfxCombo: 'assets/sfx/combo.mp3', 
+    sfxBomb: 'assets/sfx/bikini-bottom/bomb.mp3', 
     blockBorderColor: '#5490ff',
     blocks: [
         { id: 'KrabbyPatty', img: 'assets/candy/bikini-bottom/krabby-patty.png' },
